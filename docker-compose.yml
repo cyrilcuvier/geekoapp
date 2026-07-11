@@ -1,0 +1,28 @@
+services:
+  geeko-redis:
+    image: redis:7-alpine
+
+  geeko-api:
+    build: ./geeko-api
+    environment:
+      REDIS_URL: redis://geeko-redis:6379/0
+      ORACLE_URL: http://geeko-oracle:9000
+      TICK_SECONDS: "3"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - geeko-redis
+
+  geeko-oracle:
+    build: ./oracle
+    environment:
+      GEEKO_ORACLE_FLAG_PATH: /etc/geeko-oracle/patched
+    ports:
+      - "9000:9000"
+
+  geeko-frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - geeko-api
