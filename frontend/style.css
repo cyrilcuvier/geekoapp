@@ -1,0 +1,45 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+  background: #101418;
+  color: #eee;
+}
+
+#arena {
+  position: relative;
+  width: 80vw;
+  height: 50vh;
+  margin: 1rem auto;
+  border: 2px dashed #444;
+  border-radius: 8px;
+}
+
+#geeko {
+  position: absolute;
+  font-size: 3rem;
+  transform: translate(-50%, -50%);
+  transition: left 1.8s linear, top 1.8s linear;
+}
+
+.oracle {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.oracle.unavailable {
+  background: #333;
+  color: #999;
+}
+
+.oracle.unpatched {
+  background: #5c1a1a;
+  color: #ffb3b3;
+}
+
+.oracle.patched {
+  background: #1a5c2a;
+  color: #b3ffc2;
+}
