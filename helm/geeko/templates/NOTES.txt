@@ -1,0 +1,13 @@
+Où est Geeko ? has been deployed.
+
+Redis source: {{ .Values.redis.source }}
+{{- if eq .Values.redis.source "dockerhub" }}
+  -> deliberately pulled from Docker Hub (session 1 anti-pattern demo).
+     To fix live: `helm upgrade geeko ./helm/geeko --set redis.source=appco --set api.redisUrl=<appco-redis-service-url>`
+     after installing the SUSE Application Collection Redis chart separately via
+     Cluster -> Apps -> Charts in Rancher.
+{{- else }}
+  -> using the SUSE Application Collection Redis release. Nice.
+{{- end }}
+
+Oracle URL: {{ .Values.api.oracleUrl | default "(none - session 1, no VM yet)" }}

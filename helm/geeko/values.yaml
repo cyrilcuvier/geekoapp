@@ -1,0 +1,24 @@
+image:
+  registry: "REPLACE_ME.registry.example.com"  # set to Cyril's real registry before first deploy
+  apiRepository: geeko-api
+  frontendRepository: geeko-frontend
+  tag: "0.1.0"
+  pullPolicy: IfNotPresent
+
+api:
+  replicas: 1
+  redisUrl: "redis://geeko-redis:6379/0"
+  oracleUrl: ""   # empty in session 1 (no VM yet); set to the Oracle VM's URL in session 2/3
+  tickSeconds: 3
+
+frontend:
+  replicas: 1
+
+redis:
+  # "dockerhub" = the deliberate session-1 anti-pattern (raw community image).
+  # "appco"     = the fixed state, deployed via the SUSE Application Collection chart instead
+  #               (installed as a *separate* Helm release from apps.rancher.io — see runbook).
+  #               When redis.source is "appco", this chart does not deploy its own Redis at all;
+  #               set api.redisUrl to point at the AppCo-deployed Redis service instead.
+  source: dockerhub
+  dockerhubImage: "redis:7-alpine"

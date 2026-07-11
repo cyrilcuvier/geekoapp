@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: geeko-api
+spec:
+  selector:
+    app: geeko-api
+  ports:
+    - port: 8000
+      targetPort: 8000

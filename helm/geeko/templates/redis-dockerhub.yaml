@@ -1,0 +1,32 @@
+{{- if eq .Values.redis.source "dockerhub" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: geeko-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: geeko-redis
+  template:
+    metadata:
+      labels:
+        app: geeko-redis
+    spec:
+      containers:
+        - name: redis
+          image: {{ .Values.redis.dockerhubImage | quote }}
+          ports:
+            - containerPort: 6379
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: geeko-redis
+spec:
+  selector:
+    app: geeko-redis
+  ports:
+    - port: 6379
+      targetPort: 6379
+{{- end }}

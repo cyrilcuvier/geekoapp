@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: geeko-api
+spec:
+  replicas: {{ .Values.api.replicas }}
+  selector:
+    matchLabels:
+      app: geeko-api
+  template:
+    metadata:
+      labels:
+        app: geeko-api
+    spec:
+      containers:
+        - name: geeko-api
+          image: "{{ .Values.image.registry }}/{{ .Values.image.apiRepository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 8000
+          env:
+            - name: REDIS_URL
+              value: {{ .Values.api.redisUrl | quote }}
+            - name: ORACLE_URL
+              value: {{ .Values.api.oracleUrl | quote }}
+            - name: TICK_SECONDS
+              value: {{ .Values.api.tickSeconds | quote }}
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
