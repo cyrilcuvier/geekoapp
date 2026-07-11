@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: geeko-api
-          image: "{{ .Values.image.registry }}/{{ .Values.image.apiRepository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.api.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 8000
