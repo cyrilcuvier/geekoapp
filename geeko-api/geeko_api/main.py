@@ -5,12 +5,12 @@ import redis
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .oracle_client import OracleClient, OracleUnavailable
+from .sage_client import SageClient, SageUnavailable
 from .simulator import initial_state, next_state
 from .store import GeekoStore
 
 
-def create_app(store: GeekoStore, oracle_client: OracleClient | None, tick_seconds: float = 3.0) -> FastAPI:
+def create_app(store: GeekoStore, sage_client: SageClient | None, tick_seconds: float = 3.0) -> FastAPI:
     app = FastAPI(title="geeko-api")
     app.add_middleware(
         CORSMiddleware,
@@ -40,13 +40,13 @@ def create_app(store: GeekoStore, oracle_client: OracleClient | None, tick_secon
         state = store.get() or initial_state()
         return state.model_dump()
 
-    @app.get("/api/oracle")
-    def get_oracle():
-        if oracle_client is None:
+    @app.get("/api/sage")
+    def get_sage():
+        if sage_client is None:
             return {"available": False}
         try:
-            fortune = oracle_client.fetch_fortune()
-        except OracleUnavailable:
+            fortune = sage_client.fetch_fortune()
+        except SageUnavailable:
             return {"available": False}
         return {"available": True, **fortune}
 
@@ -55,12 +55,12 @@ def create_app(store: GeekoStore, oracle_client: OracleClient | None, tick_secon
 
 def _build_default_app() -> FastAPI:
     redis_url = os.environ.get("REDIS_URL", "redis://localhost:6379/0")
-    oracle_url = os.environ.get("ORACLE_URL")
+    sage_url = os.environ.get("SAGE_URL")
     tick_seconds = float(os.environ.get("TICK_SECONDS", "3"))
 
     store = GeekoStore(redis.Redis.from_url(redis_url))
-    oracle_client = OracleClient(base_url=oracle_url) if oracle_url else None
-    return create_app(store=store, oracle_client=oracle_client, tick_seconds=tick_seconds)
+    sage_client = SageClient(base_url=sage_url) if sage_url else None
+    return create_app(store=store, sage_client=sage_client, tick_seconds=tick_seconds)
 
 
 app = _build_default_app()

@@ -3,9 +3,9 @@ requires = ["setuptools>=45", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "geeko-oracle"
+name = "geeko-sage"
 version = "0.1.0"
-description = "Geeko Oracle - patch status fortune service"
+description = "Geeko Sage - patch status fortune service"
 dependencies = [
     "fastapi==0.115.0",
     "uvicorn[standard]==0.30.6",

@@ -1,4 +1,4 @@
-from oracle_service.patch_status import get_patch_status
+from sage_service.patch_status import get_patch_status
 
 
 def test_reports_unpatched_when_flag_file_absent(tmp_path):

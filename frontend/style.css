@@ -21,7 +21,7 @@ body {
   transition: left 1.8s linear, top 1.8s linear;
 }
 
-.oracle {
+.sage {
   display: inline-block;
   margin-top: 1rem;
   padding: 0.75rem 1.5rem;
@@ -29,17 +29,17 @@ body {
   font-weight: bold;
 }
 
-.oracle.unavailable {
+.sage.unavailable {
   background: #333;
   color: #999;
 }
 
-.oracle.unpatched {
+.sage.unpatched {
   background: #5c1a1a;
   color: #ffb3b3;
 }
 
-.oracle.patched {
+.sage.patched {
   background: #1a5c2a;
   color: #b3ffc2;
 }

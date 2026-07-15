@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 
-from oracle_service.main import create_app
+from sage_service.main import create_app
 
 
 def test_healthz_reports_unpatched_by_default(tmp_path):
@@ -34,11 +34,11 @@ def test_fortune_is_deterministic_when_unpatched_and_varies_when_patched(tmp_pat
     client = TestClient(unpatched_app)
     first = client.get("/fortune").json()["message"]
     second = client.get("/fortune").json()["message"]
-    assert first == second  # unpatched Oracle uses a fixed seed -> same fortune every time
+    assert first == second  # unpatched Sage uses a fixed seed -> same fortune every time
 
     flag_path = tmp_path / "patched-2"
     flag_path.write_text("patched")
     patched_app = create_app(flag_path=flag_path)
     patched_client = TestClient(patched_app)
     messages = {patched_client.get("/fortune").json()["message"] for _ in range(20)}
-    assert len(messages) > 1  # patched Oracle uses a real random source -> varies
+    assert len(messages) > 1  # patched Sage uses a real random source -> varies

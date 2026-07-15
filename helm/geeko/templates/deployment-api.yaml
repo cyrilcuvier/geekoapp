@@ -21,8 +21,8 @@ spec:
           env:
             - name: REDIS_URL
               value: {{ .Values.api.redisUrl | quote }}
-            - name: ORACLE_URL
-              value: {{ .Values.api.oracleUrl | quote }}
+            - name: SAGE_URL
+              value: {{ .Values.api.sageUrl | quote }}
             - name: TICK_SECONDS
               value: {{ .Values.api.tickSeconds | quote }}
           readinessProbe:

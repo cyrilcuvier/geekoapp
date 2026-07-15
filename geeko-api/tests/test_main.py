@@ -2,23 +2,23 @@ import fakeredis
 from fastapi.testclient import TestClient
 
 from geeko_api.main import create_app
-from geeko_api.oracle_client import OracleUnavailable
+from geeko_api.sage_client import SageUnavailable
 from geeko_api.store import GeekoStore
 
 
-class _RaisingOracle:
+class _RaisingSage:
     def fetch_fortune(self):
-        raise OracleUnavailable("no oracle in session 1")
+        raise SageUnavailable("no sage in session 1")
 
 
-class _WorkingOracle:
+class _WorkingSage:
     def fetch_fortune(self):
         return {"message": "ca va bien", "patched": True}
 
 
-def _client(oracle=None) -> TestClient:
+def _client(sage=None) -> TestClient:
     store = GeekoStore(fakeredis.FakeRedis())
-    app = create_app(store=store, oracle_client=oracle, tick_seconds=3600)
+    app = create_app(store=store, sage_client=sage, tick_seconds=3600)
     return TestClient(app)
 
 
@@ -35,19 +35,19 @@ def test_geeko_endpoint_returns_a_state_even_on_first_call():
     assert set(body.keys()) == {"x", "y", "color", "mood", "step"}
 
 
-def test_oracle_endpoint_degrades_gracefully_when_oracle_is_none():
-    response = _client(oracle=None).get("/api/oracle")
+def test_sage_endpoint_degrades_gracefully_when_sage_is_none():
+    response = _client(sage=None).get("/api/sage")
     assert response.status_code == 200
     assert response.json() == {"available": False}
 
 
-def test_oracle_endpoint_degrades_gracefully_when_oracle_raises():
-    response = _client(oracle=_RaisingOracle()).get("/api/oracle")
+def test_sage_endpoint_degrades_gracefully_when_sage_raises():
+    response = _client(sage=_RaisingSage()).get("/api/sage")
     assert response.status_code == 200
     assert response.json() == {"available": False}
 
 
-def test_oracle_endpoint_returns_fortune_when_available():
-    response = _client(oracle=_WorkingOracle()).get("/api/oracle")
+def test_sage_endpoint_returns_fortune_when_available():
+    response = _client(sage=_WorkingSage()).get("/api/sage")
     assert response.status_code == 200
     assert response.json() == {"available": True, "message": "ca va bien", "patched": True}

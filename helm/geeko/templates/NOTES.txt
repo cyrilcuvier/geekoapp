@@ -10,4 +10,4 @@ Redis source: {{ .Values.redis.source }}
   -> using the SUSE Application Collection Redis release. Nice.
 {{- end }}
 
-Oracle URL: {{ .Values.api.oracleUrl | default "(none - session 1, no VM yet)" }}
+Sage URL: {{ .Values.api.sageUrl | default "(none - session 1, no VM yet)" }}

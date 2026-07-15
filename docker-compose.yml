@@ -6,17 +6,17 @@ services:
     build: ./geeko-api
     environment:
       REDIS_URL: redis://geeko-redis:6379/0
-      ORACLE_URL: http://geeko-oracle:9000
+      SAGE_URL: http://geeko-sage:9000
       TICK_SECONDS: "3"
     ports:
       - "8000:8000"
     depends_on:
       - geeko-redis
 
-  geeko-oracle:
-    build: ./oracle
+  geeko-sage:
+    build: ./sage
     environment:
-      GEEKO_ORACLE_FLAG_PATH: /etc/geeko-oracle/patched
+      GEEKO_SAGE_FLAG_PATH: /etc/geeko-sage/patched
     ports:
       - "9000:9000"
 

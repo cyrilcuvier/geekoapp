@@ -18,7 +18,7 @@ _UNPATCHED_SEED = 42  # deliberately fixed: the "vulnerability" is a predictable
 
 
 def create_app(flag_path: Path) -> FastAPI:
-    app = FastAPI(title="geeko-oracle")
+    app = FastAPI(title="geeko-sage")
 
     @app.get("/healthz")
     def healthz():
@@ -33,4 +33,4 @@ def create_app(flag_path: Path) -> FastAPI:
     return app
 
 
-app = create_app(flag_path=Path(os.environ.get("GEEKO_ORACLE_FLAG_PATH", "/etc/geeko-oracle/patched")))
+app = create_app(flag_path=Path(os.environ.get("GEEKO_SAGE_FLAG_PATH", "/etc/geeko-sage/patched")))
