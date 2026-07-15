@@ -14,11 +14,12 @@ api:
 
 frontend:
   replicas: 1
-  tag: "frontend-0.1.1"
-  nodePort: 30080   # fixed NodePort — this cluster has no cloud LoadBalancer provisioner,
-                     # so type: LoadBalancer stays <pending> forever. Reach the app via
-                     # http://<any-node-public-ip>:30080 (open this port in the AWS
-                     # security group). See docs/2026-07-10-demo-matinee-design.md.
+  tag: "frontend-0.1.2"
+  nodePort: 30080   # fixed NodePort, only relevant if you want direct external access later
+                     # (open this port in the AWS security group + hit http://<node-ip>:30080).
+                     # Not required for local/internal access via Rancher's own Service "proxy"
+                     # view — app.js now uses paths relative to the current page, which works
+                     # correctly under that proxy's path prefix regardless of Service type.
 
 redis:
   # "dockerhub" = the deliberate session-1 anti-pattern (raw community image).
