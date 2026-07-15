@@ -10,15 +10,256 @@ body {
   width: 80vw;
   height: 50vh;
   margin: 1rem auto;
-  border: 2px dashed #444;
   border-radius: 8px;
+  overflow: hidden;
+  background: radial-gradient(circle at center, #2a2440 0%, #14101f 55%, #0a0812 100%);
+}
+
+/* Dragon-Ball-Z-style energy rays behind the character */
+.dbz-rays {
+  position: absolute;
+  inset: -20%;
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgba(255, 221, 87, 0.16) 0deg 4deg,
+    transparent 4deg 12deg
+  );
+  animation: geeko-rays-spin 40s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes geeko-rays-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 #geeko {
   position: absolute;
-  font-size: 3rem;
+  width: 150px;
   transform: translate(-50%, -50%);
   transition: left 1.8s linear, top 1.8s linear;
+  --geeko-color: #4caf50;
+}
+
+#geeko svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+/* --- base look (shared by both states) --- */
+
+.geeko-body {
+  fill: var(--geeko-color);
+  stroke: #1a1a1a;
+  stroke-width: 3;
+}
+
+.geeko-head {
+  fill: var(--geeko-color);
+  stroke: #1a1a1a;
+  stroke-width: 3;
+}
+
+.geeko-tail,
+.geeko-arm-back {
+  fill: var(--geeko-color);
+  stroke: #1a1a1a;
+  stroke-width: 3;
+}
+
+.geeko-arm {
+  fill: var(--geeko-color);
+  stroke: #1a1a1a;
+  stroke-width: 2.5;
+}
+
+.geeko-palm,
+.geeko-finger,
+.geeko-finger-folded,
+.geeko-thumb {
+  fill: var(--geeko-color);
+  stroke: #1a1a1a;
+  stroke-width: 2;
+}
+
+/* outfit: summer fit */
+.geeko-tanktop {
+  fill: #f4f4f4;
+  stroke: #1a1a1a;
+  stroke-width: 3;
+}
+
+.geeko-tanktop-trim {
+  fill: #ff5252;
+  stroke: #1a1a1a;
+  stroke-width: 1.5;
+}
+
+.geeko-shorts {
+  fill: #3567d1;
+  stroke: #1a1a1a;
+  stroke-width: 3;
+}
+
+.geeko-sock {
+  fill: #f4f4f4;
+  stroke: #1a1a1a;
+  stroke-width: 2.5;
+}
+
+.geeko-flipflop-strap {
+  fill: #ff5252;
+  stroke: #1a1a1a;
+  stroke-width: 1.5;
+}
+
+.geeko-flipflop-sole {
+  fill: #2b2b2b;
+  stroke: #1a1a1a;
+  stroke-width: 2;
+}
+
+.geeko-cap {
+  fill: #ff5252;
+  stroke: #1a1a1a;
+  stroke-width: 3;
+}
+
+.geeko-cap-brim {
+  fill: #d43a3a;
+  stroke: #1a1a1a;
+  stroke-width: 2;
+}
+
+.geeko-cap-button {
+  fill: #d43a3a;
+}
+
+/* eyes: big anime-style */
+.geeko-eye-white {
+  fill: #fff;
+  stroke: #1a1a1a;
+  stroke-width: 2.5;
+}
+
+.geeko-eye-iris {
+  fill: #2b3a67;
+}
+
+.geeko-eye-pupil {
+  fill: #0a0a0a;
+}
+
+.geeko-eye-shine {
+  fill: #fff;
+}
+
+.geeko-eye-lid {
+  fill: var(--geeko-color);
+  stroke: #1a1a1a;
+  stroke-width: 2;
+}
+
+.geeko-mouth {
+  fill: none;
+  stroke: #1a1a1a;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.geeko-tongue {
+  fill: #ff5252;
+  stroke: #1a1a1a;
+  stroke-width: 1.5;
+  transform-origin: 100px 124px;
+  transform: scaleY(0.05);
+}
+
+/* sulking-only overlay, hidden by default */
+.geeko-sulk-overlay {
+  opacity: 0;
+}
+
+.geeko-sulk-arm {
+  fill: var(--geeko-color);
+  stroke: #1a1a1a;
+  stroke-width: 3;
+}
+
+.geeko-sulk-mouth {
+  fill: none;
+  stroke: #1a1a1a;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.geeko-arm-jul {
+  transform-origin: 0px 0px;
+  transform: rotate(20deg);
+}
+
+/* --- alive state: everything animates in an infinite, staggered loop --- */
+
+.geeko-alive svg {
+  animation: geeko-idle-bob 2.6s ease-in-out infinite;
+}
+
+.geeko-alive .geeko-eye-pupil {
+  animation: geeko-eyes-move 5s ease-in-out infinite;
+}
+
+.geeko-alive .geeko-tongue {
+  animation: geeko-tongue-flick 9s ease-in-out infinite;
+}
+
+.geeko-alive .geeko-arm-jul {
+  animation: geeko-jul-sign 13s ease-in-out infinite;
+}
+
+@keyframes geeko-idle-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes geeko-eyes-move {
+  0%, 15% { transform: translate(0, 0); }
+  20%, 30% { transform: translate(-4px, 1px); }
+  35%, 55% { transform: translate(0, 0); }
+  60%, 70% { transform: translate(4px, -1px); }
+  75%, 100% { transform: translate(0, 0); }
+}
+
+@keyframes geeko-tongue-flick {
+  0%, 82% { transform: scaleY(0.05); }
+  88% { transform: scaleY(1); }
+  94% { transform: scaleY(1); }
+  100% { transform: scaleY(0.05); }
+}
+
+@keyframes geeko-jul-sign {
+  0%, 78% { transform: rotate(20deg); }
+  86% { transform: rotate(-150deg); }
+  92% { transform: rotate(-150deg); }
+  100% { transform: rotate(20deg); }
+}
+
+/* --- sulking state: static pose, no idle animations --- */
+
+.geeko-sulking .geeko-arm-jul,
+.geeko-sulking .geeko-arm-back,
+.geeko-sulking .geeko-tongue,
+.geeko-sulking .geeko-mouth {
+  display: none;
+}
+
+.geeko-sulking .geeko-sulk-overlay {
+  opacity: 1;
+}
+
+.geeko-sulking .geeko-eye-pupil {
+  transform: translate(0, 2px);
 }
 
 .sage {

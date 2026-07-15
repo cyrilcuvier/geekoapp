@@ -13,15 +13,21 @@ function apiUrl(path) {
 }
 
 async function pollGeeko() {
+  const geeko = document.getElementById("geeko");
   try {
     const response = await fetch(apiUrl("api/geeko"));
     const state = await response.json();
-    const geeko = document.getElementById("geeko");
     geeko.style.left = `${state.x}%`;
     geeko.style.top = `${state.y}%`;
-    geeko.style.filter = `drop-shadow(0 0 12px ${state.color})`;
+    geeko.style.setProperty("--geeko-color", state.color);
+    geeko.className = "geeko-alive";
     document.getElementById("mood").textContent = `Geeko est ${state.mood} (étape ${state.step})`;
   } catch (err) {
+    // API unreachable (pod killed, VM migration, NeuVector quarantine...): Geeko sulks,
+    // recentered, until the next successful poll brings him back.
+    geeko.style.left = "50%";
+    geeko.style.top = "50%";
+    geeko.className = "geeko-sulking";
     document.getElementById("mood").textContent = "Geeko a disparu... (API injoignable)";
   }
 }

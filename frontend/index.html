@@ -8,7 +8,89 @@
 <body>
   <h1>Où est Geeko ?</h1>
   <div id="arena">
-    <div id="geeko">🦎</div>
+    <div class="dbz-rays"></div>
+    <div id="geeko" class="geeko-alive">
+      <svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+        <!-- back (non-signing) arm, static -->
+        <ellipse class="geeko-arm-back" cx="52" cy="150" rx="10" ry="24" transform="rotate(20 52 150)" />
+
+        <!-- feet -->
+        <g class="geeko-foot" transform="translate(75 225)">
+          <ellipse class="geeko-sock" cx="0" cy="0" rx="14" ry="9" />
+          <ellipse class="geeko-flipflop-strap" cx="0" cy="6" rx="3" ry="6" />
+          <ellipse class="geeko-flipflop-sole" cx="0" cy="12" rx="16" ry="5" />
+        </g>
+        <g class="geeko-foot" transform="translate(125 225)">
+          <ellipse class="geeko-sock" cx="0" cy="0" rx="14" ry="9" />
+          <ellipse class="geeko-flipflop-strap" cx="0" cy="6" rx="3" ry="6" />
+          <ellipse class="geeko-flipflop-sole" cx="0" cy="12" rx="16" ry="5" />
+        </g>
+
+        <!-- body -->
+        <ellipse class="geeko-body" cx="100" cy="160" rx="55" ry="65" />
+
+        <!-- tail: drawn after the body so it visibly pokes out from behind it -->
+        <path class="geeko-tail" d="M 48 185 C 5 195, -8 155, 20 130 C 32 148, 38 168, 48 185 Z" />
+
+        <!-- shorts -->
+        <path class="geeko-shorts" d="M 55 195 Q 100 185 145 195 L 148 220 L 108 220 L 100 205 L 92 220 L 52 220 Z" />
+
+        <!-- tank top -->
+        <path class="geeko-tanktop" d="M 60 115 Q 100 100 140 115 L 135 175 Q 100 185 65 175 Z" />
+        <path class="geeko-tanktop-trim" d="M 60 115 Q 100 100 140 115 L 137 124 Q 100 110 63 124 Z" />
+
+        <!-- signing arm: outer group only positions the shoulder (plain SVG attribute
+             transform, static); the animated CSS transform lives on the inner group so
+             it doesn't fight with the outer translate for transform-origin. -->
+        <g transform="translate(148 150)">
+          <g class="geeko-arm-jul">
+            <ellipse class="geeko-arm" cx="0" cy="15" rx="10" ry="17" />
+            <g class="geeko-hand" transform="translate(0 32)">
+              <circle class="geeko-palm" cx="0" cy="0" r="9" />
+              <rect class="geeko-finger geeko-finger-index" x="-3" y="-24" width="6" height="20" rx="3" />
+              <rect class="geeko-finger geeko-finger-pinky" x="7" y="-18" width="5" height="16" rx="2.5" />
+              <rect class="geeko-finger-folded" x="-8" y="-6" width="7" height="10" rx="3" />
+              <rect class="geeko-finger-folded" x="0" y="-6" width="7" height="10" rx="3" />
+              <rect class="geeko-thumb" x="-11" y="-2" width="10" height="6" rx="3" />
+            </g>
+          </g>
+        </g>
+
+        <!-- head -->
+        <circle class="geeko-head" cx="100" cy="95" r="48" />
+
+        <!-- backwards cap -->
+        <path class="geeko-cap" d="M 55 75 Q 100 35 145 75 Q 145 90 100 92 Q 55 90 55 75 Z" />
+        <rect class="geeko-cap-brim" x="94" y="70" width="12" height="16" rx="3" />
+        <circle class="geeko-cap-button" cx="100" cy="42" r="3" />
+
+        <!-- eyes -->
+        <g class="geeko-eye" transform="translate(78 98)">
+          <ellipse class="geeko-eye-lid" cx="0" cy="-13" rx="17" ry="6" />
+          <circle class="geeko-eye-white" cx="0" cy="0" r="16" />
+          <circle class="geeko-eye-iris" cx="0" cy="1" r="9" />
+          <circle class="geeko-eye-pupil" cx="0" cy="1" r="4.5" />
+          <circle class="geeko-eye-shine" cx="-3" cy="-3" r="2.2" />
+        </g>
+        <g class="geeko-eye" transform="translate(122 98)">
+          <ellipse class="geeko-eye-lid" cx="0" cy="-13" rx="17" ry="6" />
+          <circle class="geeko-eye-white" cx="0" cy="0" r="16" />
+          <circle class="geeko-eye-iris" cx="0" cy="1" r="9" />
+          <circle class="geeko-eye-pupil" cx="0" cy="1" r="4.5" />
+          <circle class="geeko-eye-shine" cx="-3" cy="-3" r="2.2" />
+        </g>
+
+        <!-- mouth + tongue -->
+        <path class="geeko-mouth" d="M 90 122 Q 100 128 110 122" />
+        <path class="geeko-tongue" d="M 96 124 Q 100 124 104 124 L 102 148 Q 100 152 98 148 Z" />
+
+        <!-- sulking face overlay (crossed arms + frown), only visible in .geeko-sulking -->
+        <g class="geeko-sulk-overlay">
+          <path class="geeko-sulk-arm" d="M 58 150 Q 100 175 142 150 L 138 165 Q 100 188 62 165 Z" />
+          <path class="geeko-sulk-mouth" d="M 90 128 Q 100 122 110 128" />
+        </g>
+      </svg>
+    </div>
   </div>
   <p id="mood">Chargement...</p>
   <div id="sage" class="sage unavailable">Le Sage de Geeko est indisponible.</div>
