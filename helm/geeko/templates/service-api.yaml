@@ -7,5 +7,6 @@ spec:
     app: geeko-api
   ports:
     - name: http
+      appProtocol: http
       port: 8000
       targetPort: 8000

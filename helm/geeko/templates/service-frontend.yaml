@@ -8,5 +8,6 @@ spec:
     app: geeko-frontend
   ports:
     - name: http
+      appProtocol: http
       port: 80
       targetPort: 80
