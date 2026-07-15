@@ -14,7 +14,7 @@ api:
 
 frontend:
   replicas: 1
-  tag: "frontend-0.1.0"
+  tag: "frontend-0.1.1"
 
 redis:
   # "dockerhub" = the deliberate session-1 anti-pattern (raw community image).
