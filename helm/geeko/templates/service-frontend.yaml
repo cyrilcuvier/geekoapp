@@ -3,9 +3,10 @@ kind: Service
 metadata:
   name: geeko-frontend
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: geeko-frontend
   ports:
     - port: 80
       targetPort: 80
+      nodePort: {{ .Values.frontend.nodePort }}
