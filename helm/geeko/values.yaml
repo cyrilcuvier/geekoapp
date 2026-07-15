@@ -6,7 +6,10 @@ api:
   replicas: 1
   tag: "api-0.1.0"
   redisUrl: "redis://geeko-redis:6379/0"
-  oracleUrl: ""   # empty in session 1 (no VM yet); set to the Oracle VM's URL in session 2/3
+  oracleUrl: ""   # empty in session 1 (no VM yet). Session 2/3: set to the Oracle VM's Tailscale
+                  # address, e.g. "http://<tailscale-ip>:9000" — the VM lab is on a separate
+                  # network from this Rancher cluster, reached via a Tailscale tunnel (no VPN
+                  # peering between the two). See docs/2026-07-10-demo-matinee-design.md.
   tickSeconds: 3
 
 frontend:
