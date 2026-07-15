@@ -23,4 +23,4 @@ redis:
   #               When redis.source is "appco", this chart does not deploy its own Redis at all;
   #               set api.redisUrl to point at the AppCo-deployed Redis service instead.
   source: dockerhub
-  dockerhubImage: "redis:7-alpine"
+  dockerhubImage: "redis:8.6.4"
