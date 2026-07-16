@@ -6,15 +6,19 @@ api:
   replicas: 1
   tag: "api-0.1.0"
   redisUrl: "redis://geeko-redis:6379/0"
-  sageUrl: ""     # empty in session 1 (no VM yet). Session 2/3: set to the Sage VM's Tailscale
-                  # address, e.g. "http://<tailscale-ip>:9000" — the VM lab is on a separate
-                  # network from this Rancher cluster, reached via a Tailscale tunnel (no VPN
-                  # peering between the two). See docs/2026-07-10-demo-matinee-design.md.
+  sageUrl: "http://100.118.103.94:9000"     # Sage VM's stable Tailscale address, reached via the
+                  # tailscale sidecar on this pod (no VPN peering between the two networks).
+                  # See docs/2026-07-10-demo-matinee-design.md.
   tickSeconds: 3
 
 frontend:
   replicas: 1
   tag: "frontend-0.1.3"
+
+tailscale:
+  # Secret must be created out-of-band (Rancher UI, geeko-demo namespace) before install/upgrade:
+  # key "authkey" = a reusable Tailscale auth key from https://login.tailscale.com/admin/settings/keys
+  authKeySecretName: geeko-tailscale-auth
 
 redis:
   # "dockerhub" = the deliberate session-1 anti-pattern (raw community image).
