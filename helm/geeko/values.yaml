@@ -6,9 +6,8 @@ api:
   replicas: 1
   tag: "api-0.1.0"
   redisUrl: "redis://geeko-redis:6379/0"
-  sageUrl: "http://100.118.103.94:9000"     # Sage VM's stable Tailscale address, reached via the
-                  # tailscale sidecar on this pod (no VPN peering between the two networks).
-                  # See docs/2026-07-10-demo-matinee-design.md.
+  sageUrl: ""     # empty in session 1 (no VM, no tailscale sidecar — geeko-api degrades gracefully).
+                  # Ignored once tailscale.enabled is true (SAGE_URL then comes from the Secret below).
   tickSeconds: 3
 
 frontend:
@@ -16,9 +15,15 @@ frontend:
   tag: "frontend-0.1.3"
 
 tailscale:
-  # Secret must be created out-of-band (Rancher UI, geeko-demo namespace) before install/upgrade:
-  # key "authkey" = a reusable Tailscale auth key from https://login.tailscale.com/admin/settings/keys
-  authKeySecretName: geeko-tailscale-auth
+  # Disabled by default: session 1 never needs the Sage VM / tailscale sidecar at all.
+  # Turn on only for session 2/3, via a values override applied at install/upgrade time in the
+  # Rancher UI (never commit "enabled: true" or any real value here).
+  enabled: false
+  # Secret must be created out-of-band (Rancher UI, geeko-demo namespace) before enabling:
+  #   key "authkey"  = a reusable Tailscale auth key (https://login.tailscale.com/admin/settings/keys)
+  #   key "sage-url" = e.g. "http://<sage-vm-tailscale-ip>:9000"
+  # Neither value is ever stored in this repo.
+  secretName: geeko-tailscale-auth
 
 redis:
   # "dockerhub" = the deliberate session-1 anti-pattern (raw community image).

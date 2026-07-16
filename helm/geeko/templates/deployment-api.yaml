@@ -21,21 +21,30 @@ spec:
           env:
             - name: REDIS_URL
               value: {{ .Values.api.redisUrl | quote }}
+{{- if .Values.tailscale.enabled }}
+            - name: SAGE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.tailscale.secretName }}
+                  key: sage-url
+{{- else }}
             - name: SAGE_URL
               value: {{ .Values.api.sageUrl | quote }}
+{{- end }}
             - name: TICK_SECONDS
               value: {{ .Values.api.tickSeconds | quote }}
           readinessProbe:
             httpGet:
               path: /healthz
               port: 8000
+{{- if .Values.tailscale.enabled }}
         - name: tailscale
           image: "tailscale/tailscale:latest"
           env:
             - name: TS_AUTHKEY
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.tailscale.authKeySecretName }}
+                  name: {{ .Values.tailscale.secretName }}
                   key: authkey
             - name: TS_STATE_DIR
               value: /var/lib/tailscale
@@ -57,3 +66,4 @@ spec:
         - name: dev-net-tun
           hostPath:
             path: /dev/net/tun
+{{- end }}
