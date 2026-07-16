@@ -6,12 +6,10 @@ set -euo pipefail
 
 INSTALL_DIR=/opt/geeko-sage
 
-zypper --non-interactive install -y python312 python312-pip
-
 mkdir -p "$INSTALL_DIR"
 cp -r sage_service requirements.txt "$INSTALL_DIR/"
 
-python3.12 -m venv "$INSTALL_DIR/venv"
+python3 -m venv "$INSTALL_DIR/venv"
 "$INSTALL_DIR/venv/bin/pip" install --no-cache-dir -r "$INSTALL_DIR/requirements.txt"
 
 install -m 644 geeko-sage.service /etc/systemd/system/geeko-sage.service
