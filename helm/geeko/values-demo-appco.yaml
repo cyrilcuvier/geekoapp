@@ -1,0 +1,7 @@
+# Target state: Redis is supplied by the separate AppCo release.
+# Authentication is intentionally disabled for this test-only demo.
+api:
+  redisUrl: "redis://geeko-appco-redis:6379/0"
+
+redis:
+  source: appco

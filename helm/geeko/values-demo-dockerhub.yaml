@@ -1,0 +1,7 @@
+# Reproducible baseline: bundled Redis from Docker Hub.
+api:
+  redisUrl: "redis://geeko-redis:6379/0"
+
+redis:
+  source: dockerhub
+  dockerhubImage: "redis:8.6.4"

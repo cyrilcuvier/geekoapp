@@ -30,6 +30,6 @@ redis:
   # "appco"     = the fixed state, deployed via the SUSE Application Collection chart instead
   #               (installed as a *separate* Helm release from apps.rancher.io — see runbook).
   #               When redis.source is "appco", this chart does not deploy its own Redis at all;
-  #               set api.redisUrl to point at the AppCo-deployed Redis service instead.
+  #               set api.redisUrl to the AppCo Redis service URL.
   source: dockerhub
   dockerhubImage: "redis:8.6.4"

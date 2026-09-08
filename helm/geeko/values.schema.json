@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "redis": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": ["dockerhub", "appco"]
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": ["redis"],
+        "properties": {
+          "redis": {
+            "required": ["source"],
+            "properties": {
+              "source": {"const": "appco"}
+            }
+          }
+        }
+      },
+      "then": {
+        "required": ["api"],
+        "properties": {
+          "api": {
+            "required": ["redisUrl"],
+            "properties": {
+              "redisUrl": {
+                "const": "redis://geeko-appco-redis:6379/0"
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "required": ["api"],
+        "properties": {
+          "api": {
+            "required": ["redisUrl"],
+            "properties": {
+              "redisUrl": {
+                "enum": [
+                  "redis://geeko-redis:6379/0",
+                  "redis://geeko-appco-redis:6379/0"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

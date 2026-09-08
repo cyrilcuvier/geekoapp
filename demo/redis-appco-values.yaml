@@ -1,0 +1,9 @@
+# Values for dp.apps.rancher.io/charts/redis:2.7.2.
+# Registry pull authentication is already configured in the target namespaces.
+auth:
+  enabled: false
+
+# The Docker Hub baseline is ephemeral too. Disabling the PVC keeps repeated
+# demo cycles independent from the cluster's storage class and cleanup policy.
+persistence:
+  enabled: false
