@@ -1,13 +1,7 @@
 # Values for dp.apps.rancher.io/charts/redis:2.7.2.
-# Both referenced Secrets must already exist in the target namespace.
-global:
-  imagePullSecrets:
-    - application-collection
-
+# Registry pull authentication is already configured in the target namespaces.
 auth:
-  enabled: true
-  existingSecret: geeko-redis-auth
-  passwordKey: password
+  enabled: false
 
 # The Docker Hub baseline is ephemeral too. Disabling the PVC keeps repeated
 # demo cycles independent from the cluster's storage class and cleanup policy.

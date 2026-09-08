@@ -6,23 +6,21 @@ This directory defines the Redis Application Collection release used by the
 - `helm/geeko/values-demo-dockerhub.yaml`: reproducible baseline using
   `redis:8.6.4` and Service `geeko-redis`.
 - `helm/geeko/values-demo-appco.yaml`: geekoapp uses the separate Redis release
-  through a Kubernetes Secret.
+  at `redis://geeko-appco-redis:6379/0`.
+
+Redis authentication is intentionally disabled in both states. This is a
+short-lived demonstration, matching the original geekoapp behavior: no Redis
+password, no Redis Secret, and no credential in the application values.
+
+The target clusters and namespaces already provide their Application
+Collection registry authentication. The chart therefore does not declare an
+`imagePullSecret`. This prerequisite was supplied by the environment owner and
+has not yet been verified through cluster access.
 
 The baseline intentionally pins the requested Docker Hub tag `redis:8.6.4`.
 This makes the declared demo state repeatable, but it is not byte-level image
 immutability: that would additionally require a validated multi-architecture
 digest.
-
-No credential is stored in this repository. Before the target-state commands,
-create these namespace-local Secrets through Rancher or another approved
-out-of-band mechanism:
-
-- `application-collection`: registry pull credential for
-  `dp.apps.rancher.io`.
-- `geeko-redis-auth`, with two keys:
-  - `password`: the Redis password consumed by the AppCo chart.
-  - `url`: the complete matching URL consumed by geeko-api,
-    `redis://:<same-password>@geeko-appco-redis:6379/0`.
 
 ## Show the current declared state
 
@@ -60,8 +58,7 @@ helm upgrade --install geeko ./helm/geeko \
   -f ./helm/geeko/values-demo-appco.yaml
 ```
 
-Expected Service: `geeko-appco-redis`. The password remains in the Secret;
-Helm values contain only its name and key.
+Expected endpoint: `redis://geeko-appco-redis:6379/0`.
 
 ## Return to A
 
@@ -74,6 +71,7 @@ Rollback order is deliberate:
 5. Only then remove the separate AppCo release.
 
 ```sh
+# Intermediate state: add bundled Redis while the API still uses AppCo.
 helm upgrade --install geeko ./helm/geeko \
   -n <namespace> \
   -f ./helm/geeko/values-demo-appco.yaml \
@@ -98,7 +96,7 @@ The same transition can be represented by a PR and reversed by reverting that
 PR or merging an inverse PR. No manual edit of live Kubernetes resources is
 needed.
 
-## Local render test
+## Local render tests
 
 The geekoapp profile test is hermetic and requires no registry login:
 

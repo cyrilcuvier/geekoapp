@@ -29,16 +29,26 @@
         "required": ["api"],
         "properties": {
           "api": {
-            "required": ["redisSecret"],
+            "required": ["redisUrl"],
             "properties": {
-              "redisSecret": {
-                "type": "object",
-                "required": ["enabled", "name", "key"],
-                "properties": {
-                  "enabled": {"const": true},
-                  "name": {"type": "string", "minLength": 1},
-                  "key": {"type": "string", "minLength": 1}
-                }
+              "redisUrl": {
+                "const": "redis://geeko-appco-redis:6379/0"
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "required": ["api"],
+        "properties": {
+          "api": {
+            "required": ["redisUrl"],
+            "properties": {
+              "redisUrl": {
+                "enum": [
+                  "redis://geeko-redis:6379/0",
+                  "redis://geeko-appco-redis:6379/0"
+                ]
               }
             }
           }

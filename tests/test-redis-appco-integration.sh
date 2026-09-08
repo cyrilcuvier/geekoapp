@@ -21,21 +21,30 @@ helm template geeko-appco oci://dp.apps.rancher.io/charts/redis \
 
 assert_contains 'name: geeko-appco-redis'
 assert_contains 'image: dp.apps.rancher.io/containers/redis:8.6.6-9.11'
-assert_contains 'name: application-collection'
-
-# Ignore upstream formatting differences such as optional YAML quotes.
-if ! grep -Eq "name: ['\"]?geeko-redis-auth['\"]?$" "$render"; then
-  printf 'AppCo render does not reference Secret geeko-redis-auth\n' >&2
-  exit 1
-fi
-if ! grep -Eq "key: ['\"]?password['\"]?$" "$render"; then
-  printf 'AppCo render does not reference Secret key password\n' >&2
-  exit 1
-fi
 
 if grep -Fq -- 'kind: Secret' "$render"; then
   printf 'AppCo chart unexpectedly rendered a Secret\n' >&2
   exit 1
 fi
+if grep -Fq -- 'geeko-redis-auth' "$render"; then
+  printf 'AppCo chart unexpectedly references a Redis auth Secret\n' >&2
+  exit 1
+fi
+if grep -Fq -- 'application-collection' "$render"; then
+  printf 'AppCo values unexpectedly reference an explicit image pull Secret\n' >&2
+  exit 1
+fi
+if grep -Fq -- 'imagePullSecrets:' "$render"; then
+  printf 'AppCo pod unexpectedly declares explicit imagePullSecrets\n' >&2
+  exit 1
+fi
+if grep -Fq -- 'name: _REDIS_PASSWORD' "$render"; then
+  printf 'AppCo chart unexpectedly injects a Redis password environment variable\n' >&2
+  exit 1
+fi
+if grep -Fq -- 'name: REDISCLI_AUTH' "$render"; then
+  printf 'AppCo chart unexpectedly injects Redis client authentication\n' >&2
+  exit 1
+fi
 
-printf 'Redis AppCo authenticated integration render: PASS\n'
+printf 'Redis AppCo unauthenticated integration render: PASS\n'

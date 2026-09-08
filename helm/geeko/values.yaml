@@ -6,12 +6,6 @@ api:
   replicas: 1
   tag: "api-0.1.0"
   redisUrl: "redis://geeko-redis:6379/0"
-  # Optional reference to a Secret containing the complete Redis URL.
-  # Keep credentials out of values files and Git.
-  redisSecret:
-    enabled: false
-    name: ""
-    key: ""
   sageUrl: ""     # empty in session 1 (no VM, no tailscale sidecar — geeko-api degrades gracefully).
                   # Ignored once tailscale.enabled is true (SAGE_URL then comes from the Secret below).
   tickSeconds: 3
@@ -36,6 +30,6 @@ redis:
   # "appco"     = the fixed state, deployed via the SUSE Application Collection chart instead
   #               (installed as a *separate* Helm release from apps.rancher.io — see runbook).
   #               When redis.source is "appco", this chart does not deploy its own Redis at all;
-  #               enable api.redisSecret to consume its connection URL out-of-band.
+  #               set api.redisUrl to the AppCo Redis service URL.
   source: dockerhub
   dockerhubImage: "redis:8.6.4"

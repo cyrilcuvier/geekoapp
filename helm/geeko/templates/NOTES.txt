@@ -5,7 +5,7 @@ Redis source: {{ .Values.redis.source }}
   -> deliberately pulled from Docker Hub (session 1 anti-pattern demo).
      Use values-demo-appco.yaml only after the separate AppCo Redis release is ready.
 {{- else }}
-  -> external Redis expected; REDIS_URL comes from the configured Kubernetes Secret.
+  -> external Redis expected; REDIS_URL points to the AppCo Service.
 {{- end }}
 
 Sage URL: {{ .Values.api.sageUrl | default "(none - session 1, no VM yet)" }}

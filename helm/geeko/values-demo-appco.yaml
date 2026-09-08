@@ -1,11 +1,7 @@
 # Target state: Redis is supplied by the separate AppCo release.
-# The Secret is created out-of-band; no credential belongs in this file.
+# Authentication is intentionally disabled for this test-only demo.
 api:
-  redisUrl: ""
-  redisSecret:
-    enabled: true
-    name: geeko-redis-auth
-    key: url
+  redisUrl: "redis://geeko-appco-redis:6379/0"
 
 redis:
   source: appco
