@@ -20,7 +20,14 @@ spec:
             - containerPort: 8000
           env:
             - name: REDIS_URL
+{{- if .Values.api.redisSecret.enabled }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "api.redisSecret.name is required when api.redisSecret.enabled=true" .Values.api.redisSecret.name }}
+                  key: {{ required "api.redisSecret.key is required when api.redisSecret.enabled=true" .Values.api.redisSecret.key }}
+{{- else }}
               value: {{ .Values.api.redisUrl | quote }}
+{{- end }}
 {{- if .Values.tailscale.enabled }}
             - name: SAGE_URL
               valueFrom:

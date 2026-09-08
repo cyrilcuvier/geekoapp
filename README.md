@@ -52,11 +52,12 @@ renders an animated SVG character whose look reacts to the live state:
 
 `values.yaml` has a `redis.source` toggle:
 
-- `dockerhub` (default) — a raw, unpinned community image straight from Docker Hub. Deliberately the
-  "before" state.
+- `dockerhub` (default) — a community image from Docker Hub, pinned to the demo tag but not to an
+  immutable digest. Deliberately the "before" state.
 - `appco` — when set, the chart deploys **no Redis at all**; instead you install Redis as its own
-  Helm release from the SUSE Application Collection (signed, SBOM'd, hardened) and point
-  `api.redisUrl` at that service. This is the "after" state.
+  Helm release from the SUSE Application Collection (signed, SBOM'd, hardened) and inject the
+  connection URL from an out-of-band Kubernetes Secret. This is the "after" state. See
+  `demo/README.md` for the reversible procedure.
 
 Same idea applies to the exact image tag used in `dockerhub` mode — swapping to an old/CVE-heavy tag
 vs. an Alpine tag is a good way to show a vulnerability scanner (e.g. NeuVector) reporting a real
@@ -108,6 +109,7 @@ Key `values.yaml` knobs:
 |---|---|---|
 | `image.repository` | `cyrilcuvier/geekoapp` | Docker Hub repo (one tag per component: `api-x.y.z`, `frontend-x.y.z`) |
 | `api.redisUrl` | `redis://geeko-redis:6379/0` | Redis connection string |
+| `api.redisSecret.enabled` | `false` | Read `REDIS_URL` from a Kubernetes Secret instead |
 | `api.sageUrl` | `""` | Sage service URL — leave empty if you don't have one |
 | `redis.source` | `dockerhub` | `dockerhub` (bundled anti-pattern) or `appco` (bring your own, e.g. Application Collection) |
 | `tailscale.enabled` | `false` | Opt-in sidecar to reach a Sage instance over Tailscale, see above |
