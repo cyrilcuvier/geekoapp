@@ -12,10 +12,10 @@ Redis authentication is intentionally disabled in both states. This is a
 short-lived demonstration, matching the original geekoapp behavior: no Redis
 password, no Redis Secret, and no credential in the application values.
 
-The target clusters and namespaces already provide their Application
-Collection registry authentication. The chart therefore does not declare an
-`imagePullSecret`. This prerequisite was supplied by the environment owner and
-has not yet been verified through cluster access.
+The target namespace must contain an `application-collection` Secret of type
+`kubernetes.io/dockerconfigjson`. The AppCo values reference that Secret as an
+`imagePullSecret`; its credential value remains out of Git and rendered
+manifests. Verify only the Secret name and type before installing the release.
 
 The baseline intentionally pins the requested Docker Hub tag `redis:8.6.4`.
 This makes the declared demo state repeatable, but it is not byte-level image
@@ -45,6 +45,9 @@ Install and validate Redis before switching geekoapp, so the API is never
 pointed at an unavailable target:
 
 ```sh
+kubectl get secret application-collection -n <namespace> \
+  -o jsonpath='{.type}{"\n"}'
+
 helm upgrade --install geeko-appco \
   oci://dp.apps.rancher.io/charts/redis \
   --version 2.7.2 \
