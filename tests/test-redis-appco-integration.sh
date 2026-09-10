@@ -15,12 +15,23 @@ assert_contains() {
   fi
 }
 
+assert_matches() {
+  local pattern="$1"
+  if ! grep -Eq -- "$pattern" "$render"; then
+    printf 'expected AppCo render to match: %s\n' "$pattern" >&2
+    exit 1
+  fi
+}
+
 helm template geeko-appco oci://dp.apps.rancher.io/charts/redis \
   --version 2.7.2 \
   -f "$appco_values" > "$render"
 
 assert_contains 'name: geeko-appco-redis'
-assert_contains 'image: dp.apps.rancher.io/containers/redis:8.6.6-9.11'
+assert_contains 'kind: StatefulSet'
+# AppCo may republish a chart version with a revised image build. Validate
+# provenance and a complete tag or digest instead of freezing that internal build.
+assert_matches '^ *image: dp\.apps\.rancher\.io/containers/redis(:[^[:space:]]+|@sha256:[[:xdigit:]]{64})$'
 
 if grep -Fq -- 'kind: Secret' "$render"; then
   printf 'AppCo chart unexpectedly rendered a Secret\n' >&2
