@@ -1,5 +1,10 @@
 # Values for dp.apps.rancher.io/charts/redis:2.7.2.
-# Registry pull authentication is already configured in the target namespaces.
+# Reference only: the credential value remains out of Git and is managed in the
+# target namespace as a kubernetes.io/dockerconfigjson Secret.
+global:
+  imagePullSecrets:
+    - name: application-collection
+
 auth:
   enabled: false
 

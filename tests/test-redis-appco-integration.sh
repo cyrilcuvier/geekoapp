@@ -41,14 +41,8 @@ if grep -Fq -- 'geeko-redis-auth' "$render"; then
   printf 'AppCo chart unexpectedly references a Redis auth Secret\n' >&2
   exit 1
 fi
-if grep -Fq -- 'application-collection' "$render"; then
-  printf 'AppCo values unexpectedly reference an explicit image pull Secret\n' >&2
-  exit 1
-fi
-if grep -Fq -- 'imagePullSecrets:' "$render"; then
-  printf 'AppCo pod unexpectedly declares explicit imagePullSecrets\n' >&2
-  exit 1
-fi
+assert_contains 'imagePullSecrets:'
+assert_contains '- name: application-collection'
 if grep -Fq -- 'name: _REDIS_PASSWORD' "$render"; then
   printf 'AppCo chart unexpectedly injects a Redis password environment variable\n' >&2
   exit 1
